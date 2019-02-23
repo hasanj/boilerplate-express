@@ -3,6 +3,11 @@ var express = require('express');
 var app = express();
 
 // --> 7)  Mount the Logger middleware here
+// so the logging should be done before declaring the routes
+app.use((req, res, next) => {    
+    console.log(`${req.method} ${req.path} - ${req.ip}`);    
+    next();
+});
 
 
 // --> 11)  Mount the body-parser middleware  here
@@ -24,7 +29,11 @@ app.get("/", (req, res) => {
 });
 
 /** 4) Serve static assets  */
+//serve static assets in public folder to all paths / urls
 app.use(express.static('public'));
+
+//serve static assets in public folder to a specific path / url
+///app.use("/path", express.static('public'));
 
 /** 5) serve JSON on a specific route */
 app.get("/json", (req, res) => {    
@@ -45,7 +54,7 @@ process.env.MESSAGE_STYLE="uppercase";
  
 /** 7) Root-level Middleware - A logger */
 //  place it before all the routes !
-
+// so the logging should be done before declaring the routes
 
 /** 8) Chaining middleware. A Time server */
 
