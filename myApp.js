@@ -57,7 +57,16 @@ process.env.MESSAGE_STYLE="uppercase";
 // so the logging should be done before declaring the routes
 
 /** 8) Chaining middleware. A Time server */
-
+app.get("/now", 
+    (req, res, next) => {        
+        const now = new Date();
+        req.time = new Date(now.getTime() + 20 * 1000); //1000 milliseconds
+        next();
+    }, (req, res) => {
+        res.json({ 
+            time: req.time
+        });
+    });
 
 /** 9)  Get input from client - Route parameters */
 
