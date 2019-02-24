@@ -58,18 +58,28 @@ process.env.MESSAGE_STYLE="uppercase";
 
 /** 8) Chaining middleware. A Time server */
 app.get("/now", 
+    //middleware
+    //will be executed before the real handler
     (req, res, next) => {        
         const now = new Date();
         req.time = new Date(now.getTime() + 20 * 1000); //1000 milliseconds
         next();
-    }, (req, res) => {
+    }, 
+    //the real handler for this path
+    //will be executed after the middleware
+    (req, res) => {
         res.json({ 
             time: req.time
         });
     });
 
 /** 9)  Get input from client - Route parameters */
-
+app.get("/:word/echo", 
+    (req, res) => {
+        res.json({ 
+            echo: req.params.word
+        });
+    });
 
 /** 10) Get input from client - Query parameters */
 // /name?first=<firstname>&last=<lastname>
